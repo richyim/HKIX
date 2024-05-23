@@ -1,43 +1,22 @@
-sh run
+term leng 0
+HKT#sh ipv6  int bri
+GigabitEthernet1       [up/up]
+    unassigned
+GigabitEthernet2       [up/up]
+    FE80::250:56FF:FE97:6C41
+    2024:192:168:1::11
+Loopback1              [up/up]
+    FE80::21E:49FF:FE22:4400
+    2024:11::11
+HKT#show run
 Building configuration...
 
-Current configuration : 6211 bytes
-!
-! Last configuration change at 14:25:26 UTC Thu May 23 2024
-!
-version 17.12
-service timestamps debug datetime msec
-service timestamps log datetime msec
-platform qfp utilization monitor load 80
-platform punt-keepalive disable-kernel-core
-platform sslvpn use-pd
-platform console virtual
 !
 hostname HKT
 !
-boot-start-marker
-boot-end-marker
-!
-!
-no aaa new-model
-!
-!
-!
-!
-!
-!
-!
-!
-!
-!
-!
 ip domain name dcloud.cisco.com
 !
-!
-!
 ipv6 unicast-routing
-!
-!
 !
 interface Loopback1
  no ip address
@@ -58,6 +37,7 @@ router bgp 11
  bgp log-neighbor-changes
  neighbor 2024:192:168:1::7 remote-as 6939
  neighbor 2024:192:168:1::8 remote-as 6939
+ !
  address-family ipv4
   no neighbor 2024:192:168:1::7 activate
   no neighbor 2024:192:168:1::8 activate
@@ -69,19 +49,16 @@ router bgp 11
   neighbor 2024:192:168:1::8 activate
  exit-address-family
 !
-ip forward-protocol nd
-!
-no ip http server
-no ip http secure-server
-ip ssh bulk-mode 131072
-ip ssh rsa keypair-name ssh-key
-!
 !
 !
 route-map exclude-g2 deny 10 
  match interface GigabitEthernet2
 !
 route-map exclude-g2 permit 20 
+!
+!
+!
+control-plane
 !
 !
 line con 0
@@ -94,11 +71,9 @@ line vty 0 4
  no login
  transport input all
 !
-!
-!
-!
+end
 
-HKT#sh ipv6 ospf route
+HKT#sh ipv6 route
 IPv6 Routing Table - default - 6 entries
 Codes: C - Connected, L - Local, S - Static, U - Per-user Static route
        B - BGP, R - RIP, H - NHRP, HG - NHRP registered
@@ -120,7 +95,8 @@ L   2024:192:168:1::11/128 [0/0]
      via GigabitEthernet2, receive
 L   FF00::/8 [0/0]
      via Null0, receive
-HKT#sh bgp ipv6 unicast summary 
+
+HKT#sh bgp ipv6 unicast summary
 BGP router identifier 192.168.1.11, local AS number 11
 BGP table version is 9, main routing table version 9
 3 network entries using 816 bytes of memory
@@ -131,16 +107,34 @@ BGP table version is 9, main routing table version 9
 0 BGP filter-list cache entries using 0 bytes of memory
 BGP using 2584 total bytes of memory
 BGP activity 5/2 prefixes, 9/4 paths, scan interval 60 secs
-3 networks peaked at 14:27:46 May 23 2024 UTC (00:45:22.655 ago)
+3 networks peaked at 14:27:46 May 23 2024 UTC (03:31:40.133 ago)
 
 Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
 2024:192:168:1::7
-                4         6939     111     111        9    0    0 01:35:37        2
+                4         6939     294     296        9    0    0 04:21:54        2
 2024:192:168:1::8
-                4         6939     107     109        9    0    0 01:34:07        2
+                4         6939     291     293        9    0    0 04:20:24        2
 
+HKT#sh bgp ipv6 unicast
+BGP table version is 9, local router ID is 192.168.1.11
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal, 
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter, 
+              x best-external, a additional-path, c RIB-compressed, 
+              t secondary path, L long-lived-stale,
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
 
-HKT#sh bgp ipv6 unicast nei 2024:192:168:1::7 advertised-routes
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>   2024:11::11/128  ::                       0         32768 ?
+ *    2024:12::12/128  2024:192:168:1::12
+                                                              0 6939 12 ?
+ *>                    2024:192:168:1::12
+                                                              0 6939 12 ?
+ *    2024:13::13/128  2024:192:168:1::13
+                                                              0 6939 13 ?
+ *>                    2024:192:168:1::13
+                                                              0 6939 13 ?
+HKT#sh bgp ipv6 unicast nei 2024:192:168:1::7 adv
 BGP table version is 9, local router ID is 192.168.1.11
 Status codes: s suppressed, d damped, h history, * valid, > best, i - internal, 
               r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter, 
@@ -157,3 +151,22 @@ RPKI validation codes: V valid, I invalid, N Not found
                                                               0 6939 13 ?
 
 Total number of prefixes 3 
+HKT#sh bgp ipv6 unicast nei 2024:192:168:1::8 adv
+BGP table version is 9, local router ID is 192.168.1.11
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal, 
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter, 
+              x best-external, a additional-path, c RIB-compressed, 
+              t secondary path, L long-lived-stale,
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>   2024:11::11/128  ::                       0         32768 ?
+ *>   2024:12::12/128  2024:192:168:1::12
+                                                              0 6939 12 ?
+ *>   2024:13::13/128  2024:192:168:1::13
+                                                              0 6939 13 ?
+
+Total number of prefixes 3 
+HKT# 
+HKT#

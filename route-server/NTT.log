@@ -1,0 +1,185 @@
+term leng 0
+NTT#sh ipv6  int bri
+GigabitEthernet1       [up/up]
+    unassigned
+GigabitEthernet2       [up/up]
+    FE80::250:56FF:FE97:6C43
+    2024:192:168:1::13
+Loopback1              [up/up]
+    FE80::21E:49FF:FE22:4400
+    2024:13::13
+NTT#show run
+Building configuration...
+
+
+hostname NTT
+!
+!
+no ip domain lookup
+ip domain name dcloud.cisco.com
+!
+ipv6 unicast-routing
+!
+!
+interface Loopback1
+ no ip address
+ ipv6 address 2024:13::13/128
+!
+interface GigabitEthernet1
+ ip dhcp client client-id GigabitEthernet1
+ ip address dhcp
+ negotiation auto
+!
+interface GigabitEthernet2
+ no ip address
+ negotiation auto
+ ipv6 address 2024:192:168:1::13/80
+!
+router bgp 13
+ bgp router-id 192.168.1.13
+ bgp log-neighbor-changes
+ neighbor 2024:192:168:1::9 remote-as 6939
+ neighbor 2024:192:168:1::10 remote-as 6939
+ !
+ address-family ipv4
+  no neighbor 2024:192:168:1::9 activate
+  no neighbor 2024:192:168:1::10 activate
+ exit-address-family
+ !
+ address-family ipv6
+  redistribute connected route-map exclude-g2
+  neighbor 2024:192:168:1::9 activate
+  neighbor 2024:192:168:1::10 activate
+ exit-address-family
+!
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+ip ssh bulk-mode 131072
+ip ssh rsa keypair-name ssh-key
+!
+!
+!
+route-map exclude-g2 deny 10 
+ match interface GigabitEthernet2
+!
+route-map exclude-g2 permit 20 
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ stopbits 1
+line aux 0
+line vty 0 4
+ timeout login response 300
+ privilege level 15
+ logging synchronous
+ no login
+ transport input all
+!
+!
+!
+!
+!
+!
+!
+end
+
+NTT#sh ipv6 route
+IPv6 Routing Table - default - 6 entries
+Codes: C - Connected, L - Local, S - Static, U - Per-user Static route
+       B - BGP, R - RIP, H - NHRP, HG - NHRP registered
+       Hg - NHRP registration summary, HE - NHRP External, I1 - ISIS L1
+       I2 - ISIS L2, IA - ISIS interarea, IS - ISIS summary, D - EIGRP
+       EX - EIGRP external, ND - ND Default, NDp - ND Prefix, DCE - Destination
+       NDr - Redirect, O - OSPF Intra, OI - OSPF Inter, OE1 - OSPF ext 1
+       OE2 - OSPF ext 2, ON1 - OSPF NSSA ext 1, ON2 - OSPF NSSA ext 2
+       a - Application, m - OMP
+B   2024:11::11/128 [20/0], tag 6939
+     via 2024:192:168:1::11
+B   2024:12::12/128 [20/0], tag 6939
+     via 2024:192:168:1::12
+LC  2024:13::13/128 [0/0]
+     via Loopback1, receive
+C   2024:192:168:1::/80 [0/0]
+     via GigabitEthernet2, directly connected
+L   2024:192:168:1::13/128 [0/0]
+     via GigabitEthernet2, receive
+L   FF00::/8 [0/0]
+     via Null0, receive
+NTT#sh bgp ipv6 unicast summary
+BGP router identifier 192.168.1.13, local AS number 13
+BGP table version is 12, main routing table version 12
+3 network entries using 816 bytes of memory
+5 path entries using 800 bytes of memory
+3/3 BGP path/bestpath attribute entries using 888 bytes of memory
+2 BGP AS-PATH entries using 80 bytes of memory
+0 BGP route-map cache entries using 0 bytes of memory
+0 BGP filter-list cache entries using 0 bytes of memory
+BGP using 2584 total bytes of memory
+BGP activity 6/3 prefixes, 10/5 paths, scan interval 60 secs
+3 networks peaked at 14:27:44 May 23 2024 UTC (03:36:38.636 ago)
+
+Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
+2024:192:168:1::9
+                4         6939     296     296       12    0    0 04:22:52        2
+2024:192:168:1::10
+                4         6939     292     293       12    0    0 04:21:16        2
+NTT#sh bgp ipv6 unicast
+BGP table version is 12, local router ID is 192.168.1.13
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal, 
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter, 
+              x best-external, a additional-path, c RIB-compressed, 
+              t secondary path, L long-lived-stale,
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *    2024:11::11/128  2024:192:168:1::11
+                                                              0 6939 11 ?
+ *>                    2024:192:168:1::11
+                                                              0 6939 11 ?
+ *    2024:12::12/128  2024:192:168:1::12
+                                                              0 6939 12 ?
+ *>                    2024:192:168:1::12
+                                                              0 6939 12 ?
+ *>   2024:13::13/128  ::                       0         32768 ?
+NTT#sh bgp ipv6 unicast nei 2024:192:168:1::9 adv
+BGP table version is 12, local router ID is 192.168.1.13
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal, 
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter, 
+              x best-external, a additional-path, c RIB-compressed, 
+              t secondary path, L long-lived-stale,
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>   2024:11::11/128  2024:192:168:1::11
+                                                              0 6939 11 ?
+ *>   2024:12::12/128  2024:192:168:1::12
+                                                              0 6939 12 ?
+ *>   2024:13::13/128  ::                       0         32768 ?
+
+Total number of prefixes 3 
+NTT#sh bgp ipv6 unicast nei 2024:192:168:1::10 adv
+BGP table version is 12, local router ID is 192.168.1.13
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal, 
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter, 
+              x best-external, a additional-path, c RIB-compressed, 
+              t secondary path, L long-lived-stale,
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>   2024:11::11/128  2024:192:168:1::11
+                                                              0 6939 11 ?
+ *>   2024:12::12/128  2024:192:168:1::12
+                                                              0 6939 12 ?
+ *>   2024:13::13/128  ::                       0         32768 ?
+
+Total number of prefixes 3 
+NTT# 

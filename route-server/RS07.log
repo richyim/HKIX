@@ -1,0 +1,209 @@
+RS07#sh ipv6  int bri
+GigabitEthernet1       [up/up]
+    unassigned
+GigabitEthernet2       [up/up]
+    FE80::250:56FF:FE97:6C57
+    2024:192:168:1::7
+GigabitEthernet3       [up/up]
+    FE80::250:56FF:FE97:9357
+    2024:192:168:2::7
+RS07#show run
+Building configuration...
+
+hostname RS07
+!
+!
+!
+no ip domain lookup
+ip domain name dcloud.cisco.com
+!
+!
+ipv6 unicast-routing
+!
+interface GigabitEthernet1
+ ip dhcp client client-id GigabitEthernet1
+ ip address dhcp
+ negotiation auto
+!
+interface GigabitEthernet2
+ no ip address
+ negotiation auto
+ ipv6 address 2024:192:168:1::7/80
+ ipv6 ospf 1 area 0
+!
+interface GigabitEthernet3
+ no ip address
+ negotiation auto
+ ipv6 address 2024:192:168:2::7/80
+ ipv6 ospf 1 area 0
+ ipv6 ospf priority 0
+!
+router ospfv3 1
+ router-id 192.168.1.7
+ !
+ address-family ipv6 unicast
+  passive-interface GigabitEthernet2
+ exit-address-family
+!
+router bgp 6939
+ bgp router-id 192.168.1.7
+ bgp log-neighbor-changes
+ neighbor 2024:192:168:1::11 remote-as 11
+ neighbor 2024:192:168:1::12 remote-as 12
+ neighbor 2024:192:168:2::1 remote-as 6939
+ neighbor 2024:192:168:2::2 remote-as 6939
+ !
+ address-family ipv4
+  no neighbor 2024:192:168:1::11 activate
+  no neighbor 2024:192:168:1::12 activate
+  no neighbor 2024:192:168:2::1 activate
+  no neighbor 2024:192:168:2::2 activate
+ exit-address-family
+ !
+ address-family ipv6
+  neighbor 2024:192:168:1::11 activate
+  neighbor 2024:192:168:1::12 activate
+  neighbor 2024:192:168:2::1 activate
+  neighbor 2024:192:168:2::2 activate
+ exit-address-family
+!
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+ip ssh bulk-mode 131072
+ip ssh rsa keypair-name ssh-key
+!
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ stopbits 1
+line aux 0
+line vty 0 4
+ timeout login response 300
+ privilege level 15
+ logging synchronous
+ no login
+ transport input all
+!
+!
+!
+!
+!
+!
+!
+end
+
+RS07#sh ipv6 route
+IPv6 Routing Table - default - 10 entries
+Codes: C - Connected, L - Local, S - Static, U - Per-user Static route
+       B - BGP, R - RIP, H - NHRP, HG - NHRP registered
+       Hg - NHRP registration summary, HE - NHRP External, I1 - ISIS L1
+       I2 - ISIS L2, IA - ISIS interarea, IS - ISIS summary, D - EIGRP
+       EX - EIGRP external, ND - ND Default, NDp - ND Prefix, DCE - Destination
+       NDr - Redirect, O - OSPF Intra, OI - OSPF Inter, OE1 - OSPF ext 1
+       OE2 - OSPF ext 2, ON1 - OSPF NSSA ext 1, ON2 - OSPF NSSA ext 2
+       a - Application, m - OMP
+B   2024:11::11/128 [20/0], tag 11
+     via FE80::250:56FF:FE97:6C41, GigabitEthernet2
+B   2024:12::12/128 [20/0], tag 12
+     via FE80::250:56FF:FE97:6C42, GigabitEthernet2
+B   2024:13::13/128 [200/0], tag 13
+     via 2024:192:168:1::13
+C   2024:192:168:1::/80 [0/0]
+     via GigabitEthernet2, directly connected
+L   2024:192:168:1::7/128 [0/0]
+     via GigabitEthernet2, receive
+C   2024:192:168:2::/80 [0/0]
+     via GigabitEthernet3, directly connected
+L   2024:192:168:2::7/128 [0/0]
+     via GigabitEthernet3, receive
+OI  2024:192:168:3::1/128 [110/1]
+     via FE80::250:56FF:FE97:9351, GigabitEthernet3
+OI  2024:192:168:3::2/128 [110/1]
+     via FE80::250:56FF:FE97:6C52, GigabitEthernet3
+L   FF00::/8 [0/0]
+     via Null0, receive
+RS07#sh bgp ipv6 unicast summary
+BGP router identifier 192.168.1.7, local AS number 6939
+BGP table version is 8, main routing table version 8
+3 network entries using 816 bytes of memory
+4 path entries using 640 bytes of memory
+3/3 BGP path/bestpath attribute entries using 888 bytes of memory
+2 BGP rrinfo entries using 80 bytes of memory
+3 BGP AS-PATH entries using 72 bytes of memory
+0 BGP route-map cache entries using 0 bytes of memory
+0 BGP filter-list cache entries using 0 bytes of memory
+BGP using 2496 total bytes of memory
+BGP activity 5/2 prefixes, 7/3 paths, scan interval 60 secs
+3 networks peaked at 14:27:42 May 23 2024 UTC (03:39:59.092 ago)
+
+Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
+2024:192:168:1::11
+                4           11     305     304        8    0    0 04:30:13        1
+2024:192:168:1::12
+                4           12     304     304        8    0    0 04:30:13        1
+2024:192:168:2::1
+                4         6939     258     255        8    0    0 03:46:21        1
+2024:192:168:2::2
+                4         6939     277     279        8    0    0 04:04:12        1
+RS07#sh bgp ipv6 unicast
+BGP table version is 8, local router ID is 192.168.1.7
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal, 
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter, 
+              x best-external, a additional-path, c RIB-compressed, 
+              t secondary path, L long-lived-stale,
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>   2024:11::11/128  2024:192:168:1::11
+                                                0             0 11 ?
+ *>   2024:12::12/128  2024:192:168:1::12
+                                                0             0 12 ?
+ * i  2024:13::13/128  2024:192:168:1::13
+                                                0    100      0 13 ?
+ *>i                   2024:192:168:1::13
+                                                0    100      0 13 ?
+RS07#sh bgp ipv6 unicast nei 2024:192:168:1::11 adv
+BGP table version is 8, local router ID is 192.168.1.7
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal, 
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter, 
+              x best-external, a additional-path, c RIB-compressed, 
+              t secondary path, L long-lived-stale,
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>   2024:11::11/128  2024:192:168:1::11
+                                                0             0 11 ?
+ *>   2024:12::12/128  2024:192:168:1::12
+                                                0             0 12 ?
+ *>i  2024:13::13/128  2024:192:168:1::13
+                                                0    100      0 13 ?
+
+Total number of prefixes 3 
+RS07#sh bgp ipv6 unicast nei 2024:192:168:1::12 adv
+BGP table version is 8, local router ID is 192.168.1.7
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal, 
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter, 
+              x best-external, a additional-path, c RIB-compressed, 
+              t secondary path, L long-lived-stale,
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>   2024:11::11/128  2024:192:168:1::11
+                                                0             0 11 ?
+ *>   2024:12::12/128  2024:192:168:1::12
+                                                0             0 12 ?
+ *>i  2024:13::13/128  2024:192:168:1::13
+                                                0    100      0 13 ?
+
+Total number of prefixes 3 
+RS07#

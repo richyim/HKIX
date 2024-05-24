@@ -207,3 +207,21 @@ RPKI validation codes: V valid, I invalid, N Not found
 
 Total number of prefixes 3 
 RS07#
+
+RS07#sh ipv6 ospf int bri
+Interface    PID   Area            Intf ID    Cost  State Nbrs F/C
+Gi3          1     0               7          1     DROTH 2/5
+Gi2          1     0               6          1     DR    0/0
+RS07#sh ipv6 ospf  nei
+
+            OSPFv3 Router with ID (192.168.1.7) (Process ID 1)
+
+Neighbor ID     Pri   State           Dead Time   Interface ID    Interface
+192.168.1.8       0   2WAY/DROTHER    00:00:35    7               GigabitEthernet3
+192.168.1.9       0   2WAY/DROTHER    00:00:39    7               GigabitEthernet3
+192.168.1.10      0   2WAY/DROTHER    00:00:34    7               GigabitEthernet3
+192.168.2.1       1   FULL/BDR        00:00:35    6               GigabitEthernet3
+192.168.2.2       1   FULL/DR         00:00:37    6               GigabitEthernet3
+RS07#
+
+

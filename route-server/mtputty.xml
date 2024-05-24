@@ -1,0 +1,174 @@
+<! copy to C:\Users\admin\AppData\Roaming\TTYPlus >
+<?xml version="1.0" encoding="UTF-8"?>
+<MTPutty version="1.7">
+	<Globals>
+		<PuttyLocation>C:\Program Files\PuTTY\putty.exe</PuttyLocation>
+		<GUI>
+			<StartPage HideOnTab="0"/>
+		</GUI>
+		<General>
+			<TabCaption>0</TabCaption>
+			<NormalTermination>0</NormalTermination>
+			<AbnormalTermination>0</AbnormalTermination>
+			<AbnormalAutoReconnect>0</AbnormalAutoReconnect>
+			<QuitNoConfrim>0</QuitNoConfrim>
+			<CloseSessionNoConfirm>0</CloseSessionNoConfirm>
+			<CloseButtonOnTabs>1</CloseButtonOnTabs>
+			<TabPosition>0</TabPosition>
+			<VisualTheme></VisualTheme>
+		</General>
+		<Advanced>
+			<SaveLayout>0</SaveLayout>
+			<SaveSessions>0</SaveSessions>
+		</Advanced>
+	</Globals>
+	<Servers>
+		<Putty>
+			<Node Type="1">
+				<SavedSession>Default Settings</SavedSession>
+				<DisplayName>HKT</DisplayName>
+				<UID>{C10B1CD9-EAFD-4683-84BF-B3DCB35A613D}</UID>
+				<ServerName>198.18.128.11</ServerName>
+				<PuttyConType>2</PuttyConType>
+				<Port>0</Port>
+				<UserName></UserName>
+				<Password></Password>
+				<PasswordDelay>0</PasswordDelay>
+				<CLParams>198.18.128.11 -telnet</CLParams>
+				<ScriptDelay>0</ScriptDelay>
+			</Node>
+			<Node Type="1">
+				<SavedSession>Default Settings</SavedSession>
+				<DisplayName>HGC</DisplayName>
+				<UID>{C10B1CD9-EAFD-4683-84BF-B3DCB35A613D}</UID>
+				<ServerName>198.18.128.12</ServerName>
+				<PuttyConType>2</PuttyConType>
+				<Port>0</Port>
+				<UserName></UserName>
+				<Password>xexv5ayMTew=</Password>
+				<PasswordDelay>0</PasswordDelay>
+				<CLParams>198.18.128.12 -telnet</CLParams>
+				<ScriptDelay>0</ScriptDelay>
+			</Node>
+			<Node Type="1">
+				<SavedSession>Default Settings</SavedSession>
+				<DisplayName>NTT</DisplayName>
+				<UID>{C10B1CD9-EAFD-4683-822F-B3DCB35A613D}</UID>
+				<ServerName>198.18.128.13</ServerName>
+				<PuttyConType>2</PuttyConType>
+				<Port>0</Port>
+				<UserName></UserName>
+				<Password></Password>
+				<PasswordDelay>0</PasswordDelay>
+				<CLParams>198.18.128.13 -telnet</CLParams>
+				<ScriptDelay>0</ScriptDelay>
+			</Node>
+			<Node Type="1">
+				<SavedSession>Default Settings</SavedSession>
+				<DisplayName>RS07</DisplayName>
+				<UID>{C10B1CD9-EAFD-4683-84BF-B3DCB35A613D}</UID>
+				<ServerName>198.18.128.57</ServerName>
+				<PuttyConType>2</PuttyConType>
+				<Port>0</Port>
+				<UserName></UserName>
+				<Password>xexv5ayMTew=</Password>
+				<PasswordDelay>0</PasswordDelay>
+				<CLParams>198.18.128.57 -telnet</CLParams>
+				<ScriptDelay>0</ScriptDelay>
+			</Node>
+			<Node Type="1">
+				<SavedSession>Default Settings</SavedSession>
+				<DisplayName>RS08</DisplayName>
+				<UID>{87FC9A3B-AF69-4432-BD93-E6902A27E20F}</UID>
+				<ServerName>198.18.128.58</ServerName>
+				<PuttyConType>2</PuttyConType>
+				<Port>0</Port>
+				<UserName></UserName>
+				<Password>h4F9R81WZg0=</Password>
+				<PasswordDelay>0</PasswordDelay>
+				<CLParams>198.18.128.58 -telnet</CLParams>
+				<ScriptDelay>0</ScriptDelay>
+			</Node>
+			<Node Type="1">
+				<SavedSession>Default Settings</SavedSession>
+				<DisplayName>RS09</DisplayName>
+				<UID>{C291B04B-12F2-4197-A73E-41D886655788}</UID>
+				<ServerName>198.18.128.59</ServerName>
+				<PuttyConType>2</PuttyConType>
+				<Port>0</Port>
+				<UserName></UserName>
+				<Password>10f8aTPHQxM=</Password>
+				<PasswordDelay>0</PasswordDelay>
+				<CLParams>198.18.128.59 -telnet</CLParams>
+				<ScriptDelay>0</ScriptDelay>
+			</Node>
+			<Node Type="1">
+				<SavedSession>Default Settings</SavedSession>
+				<DisplayName>RS10</DisplayName>
+				<UID>{7302DEDE-39D6-4F06-BEC6-A0B8D34F2FB8}</UID>
+				<ServerName>198.18.128.60</ServerName>
+				<PuttyConType>2</PuttyConType>
+				<Port>0</Port>
+				<UserName></UserName>
+				<Password>I7yAz2IHAos=</Password>
+				<PasswordDelay>0</PasswordDelay>
+				<CLParams>198.18.128.60 -telnet</CLParams>
+				<ScriptDelay>0</ScriptDelay>
+			</Node>
+			<Node Type="1">
+				<SavedSession>Default Settings</SavedSession>
+				<DisplayName>iBGP1</DisplayName>
+				<UID>{7302DEDE-39D6-4F06-BED6-A0B8D34F2FB8}</UID>
+				<ServerName>198.18.128.51</ServerName>
+				<PuttyConType>2</PuttyConType>
+				<Port>0</Port>
+				<UserName></UserName>
+				<Password>dh81/roCF/NZu3rrqcOpwwYmP775R9DpUISt/L1ZJEM=</Password>
+				<PasswordDelay>0</PasswordDelay>
+				<CLParams>198.18.128.51 -telnet</CLParams>
+				<ScriptDelay>0</ScriptDelay>
+			</Node>
+			<Node Type="1">
+				<SavedSession>Default Settings</SavedSession>
+				<DisplayName>iBGP2</DisplayName>
+				<UID>{7302DEDE-39D6-4F06-BED6-A0B8D34F2FB8}</UID>
+				<ServerName>198.18.128.52</ServerName>
+				<PuttyConType>2</PuttyConType>
+				<Port>0</Port>
+				<UserName></UserName>
+				<Password>dh81/roCF/NZu3rrqcOpwwYmP775R9DpUISt/L1ZJEM=</Password>
+				<PasswordDelay>0</PasswordDelay>
+				<CLParams>198.18.128.52 -telnet</CLParams>
+				<ScriptDelay>0</ScriptDelay>
+			</Node>
+		</Putty>
+	</Servers>
+	<Internals>
+		<Putty/>
+	</Internals>
+	<Hotkeys>
+		<NextTab>0</NextTab>
+		<PrevTab>0</PrevTab>
+		<AppSwitch>16576</AppSwitch>
+		<acHideConnections>0</acHideConnections>
+		<acPuttyLocation>0</acPuttyLocation>
+		<acSettings>0</acSettings>
+		<acHideServers>16450</acHideServers>
+		<acHideToolbar>16468</acHideToolbar>
+		<acAddServer>0</acAddServer>
+		<acAddGroup>0</acAddGroup>
+		<acRemove>0</acRemove>
+		<acDetach>0</acDetach>
+		<acConnect>0</acConnect>
+		<acConnectTo>16459</acConnectTo>
+		<acTreeProps>0</acTreeProps>
+		<acSendScript>0</acSendScript>
+		<acAttach>0</acAttach>
+		<acRenameTab>0</acRenameTab>
+		<acImportTree>0</acImportTree>
+		<acExportTree>0</acExportTree>
+		<acHotkeysMap>0</acHotkeysMap>
+		<acDuplicate>0</acDuplicate>
+		<acMultiUpdate>0</acMultiUpdate>
+	</Hotkeys>
+</MTPutty>

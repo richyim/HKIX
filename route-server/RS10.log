@@ -11,7 +11,7 @@ RS10#show run
 !
 hostname RS10
 !
-no ip domain-lookup
+no ip domain lookup
 !
 ip domain name dcloud.cisco.com
 !
